@@ -1,0 +1,62 @@
+[
+    {
+        "fold": 1,
+        "train_file": "fold1_train.json",
+        "test_file": "fold1_test.json",
+        "valid_file": "fold1_valid.json"
+    },
+    {
+        "fold": 2,
+        "train_file": "fold2_train.json",
+        "test_file": "fold2_test.json",
+        "valid_file": "fold2_valid.json"
+    },
+    {
+        "fold": 3,
+        "train_file": "fold3_train.json",
+        "test_file": "fold3_test.json",
+        "valid_file": "fold3_valid.json"
+    },
+    {
+        "fold": 4,
+        "train_file": "fold4_train.json",
+        "test_file": "fold4_test.json",
+        "valid_file": "fold4_valid.json"
+    },
+    {
+        "fold": 5,
+        "train_file": "fold5_train.json",
+        "test_file": "fold5_test.json",
+        "valid_file": "fold5_valid.json"
+    },
+    {
+        "fold": 6,
+        "train_file": "fold6_train.json",
+        "test_file": "fold6_test.json",
+        "valid_file": "fold6_valid.json"
+    },
+    {
+        "fold": 7,
+        "train_file": "fold7_train.json",
+        "test_file": "fold7_test.json",
+        "valid_file": "fold7_valid.json"
+    },
+    {
+        "fold": 8,
+        "train_file": "fold8_train.json",
+        "test_file": "fold8_test.json",
+        "valid_file": "fold8_valid.json"
+    },
+    {
+        "fold": 9,
+        "train_file": "fold9_train.json",
+        "test_file": "fold9_test.json",
+        "valid_file": "fold9_valid.json"
+    },
+    {
+        "fold": 10,
+        "train_file": "fold10_train.json",
+        "test_file": "fold10_test.json",
+        "valid_file": "fold10_valid.json"
+    }
+]
