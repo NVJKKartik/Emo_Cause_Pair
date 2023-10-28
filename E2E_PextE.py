@@ -10,7 +10,7 @@ from utils.prepare_data import *
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################################ FLAGS ############################################################
-train_file_path = './data_combine_eng/Subtask_2_2_train.json'       # clause keyword file
+train_file_path = 'data_combine_eng\Subtask_2_2_train.json'       # clause keyword file
 w2v_file = './data_combine_eng/w2v_200.txt'                         # embedding file
 embedding_dim = 200                                                 # dimension of word embedding
 embedding_dim_pos = 50                                              # dimension of position embedding

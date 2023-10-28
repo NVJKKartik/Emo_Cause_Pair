@@ -144,42 +144,51 @@ def get_batch_data_pair(x, sen_len, doc_len, y_position, y_cause, y_pair, distan
 
 ###################################### ACCURACY, PRECISION, RECALL, F1 #######################################
 def metrics(y_true, y_pred):
-    y_true = np.array(y_true); y_pred = np.array(y_pred)
-    true_pos = np.sum((y_true==1.) & (y_pred==1.))
-    true_neg = np.sum((y_true==0.) & (y_pred==0.))
-    false_pos = np.sum((y_true==0.) & (y_pred==1.))
-    false_neg = np.sum((y_true==1.) & (y_pred==0.))
+    y_true_cpu = y_true.cpu().numpy()
+    y_pred_cpu = y_pred.cpu().numpy()
+    true_pos = np.sum((y_true_cpu == 1.) & (y_pred_cpu == 1.))
+    true_neg = np.sum((y_true_cpu == 0.) & (y_pred_cpu == 0.))
+    false_pos = np.sum((y_true_cpu == 0.) & (y_pred_cpu == 1.))
+    false_neg = np.sum((y_true_cpu == 1.) & (y_pred_cpu == 0.))
     epsilon = 1e-9
-    acc = (true_pos + true_neg)/(false_pos + false_neg + true_pos + true_neg + epsilon)
-    p = true_pos/(false_pos + true_pos + epsilon)
-    r = true_pos/(false_neg + true_pos + epsilon)
-    f1 = 2*p*r/(p + r + epsilon)
+    acc = (true_pos + true_neg) / (false_pos + false_neg + true_pos + true_neg + epsilon)
+    p = true_pos / (false_pos + true_pos + epsilon)
+    r = true_pos / (false_neg + true_pos + epsilon)
+    f1 = 2 * p * r / (p + r + epsilon)
     return acc, p, r, f1
 
 def acc_prf_aux(pred_y, true_y, doc_len, average='weighted'):
     _, true_indices = torch.max(true_y, 2)
     _, pred_indices = torch.max(pred_y, 2)
-    true_indices_masked = []; pred_indices_masked = []
+    true_indices_masked = []
+    pred_indices_masked = []
     for i in range(len(doc_len)):
         true_indices_masked.extend(true_indices[i, :doc_len[i]])
         pred_indices_masked.extend(pred_indices[i, :doc_len[i]])
-    # acc = precision_score(true_indices_masked, pred_indices_masked, average='micro')
-    # p = precision_score(true_indices_masked, pred_indices_masked, average=average)
-    # r = recall_score(true_indices_masked, pred_indices_masked, average=average)
-    # f1 = f1_score(true_indices_masked, pred_indices_masked, average=average)
+    
+    true_indices_masked = torch.tensor(true_indices_masked).to(true_y.device)
+    pred_indices_masked = torch.tensor(pred_indices_masked).to(pred_y.device)
+    
     acc, p, r, f1 = metrics(true_indices_masked, pred_indices_masked)
     return acc, p, r, f1
     
 def acc_prf_pair(pred_y, true_y, doc_len):
-    true_indices_masked_list = []; pred_indices_masked_list = []
+    true_indices_masked_list = []
+    pred_indices_masked_list = []
+
     for i in range(len(doc_len)):
         true_y_masked = getmask(true_y[i].clone(), doc_len[i])
         pred_y_masked = getmask(pred_y[i].clone(), doc_len[i])
+
         _, true_indices_masked = torch.max(true_y_masked, 1)
         _, pred_indices_masked = torch.max(pred_y_masked, 1)
-        # if i==len(doc_len)/2: 
-        #     print(true_indices_masked); print(pred_indices_masked)
-        true_indices_masked_list.extend(true_indices_masked)
-        pred_indices_masked_list.extend(pred_indices_masked)
-    acc, p, r, f1 = metrics(true_indices_masked_list, pred_indices_masked_list)
+
+        true_indices_masked_list.extend(true_indices_masked.tolist())  # Convert to Python list
+        pred_indices_masked_list.extend(pred_indices_masked.tolist())  # Convert to Python list
+
+    # Now you can convert these lists to tensors when needed
+    true_indices_masked_tensor = torch.tensor(true_indices_masked_list).to(device)
+    pred_indices_masked_tensor = torch.tensor(pred_indices_masked_list).to(device)
+
+    acc, p, r, f1 = metrics(true_indices_masked_tensor, pred_indices_masked_tensor)
     return acc, p, r, f1
