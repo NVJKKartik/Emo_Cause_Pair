@@ -34,7 +34,7 @@ def test(Model):
     for fold in range(1, 11):
         print('############# fold {} begin ###############'.format(fold))
         #################################### LOAD TEST DATA ####################################
-        test_file_name = 'fold{}_test.txt'.format(fold)
+        test_file_name = 'fold{}_test.json'.format(fold)
         te_y_position, te_y_cause, te_y_pair, te_x, te_sen_len, te_doc_len, te_distance = load_data_pair(
             './data_combine_eng/'+test_file_name, word_id_mapping, max_doc_len, max_sen_len)
         pos_embedding = torch.load("./save/pos_embedding_fold_{}.pth".format(fold))
@@ -44,11 +44,11 @@ def test(Model):
             te_pred_y_pos, te_pred_y_cause, te_pred_y_pair = Model(embedding_lookup(word_embedding, \
                 te_x), embedding_lookup(pos_embedding, te_distance))
             # emotion results
-            acc, p, r, f1 = acc_prf_1st_step(te_pred_y_pos, te_y_position, te_doc_len)
+            acc, p, r, f1 = acc_prf_aux(te_pred_y_pos, te_y_position, te_doc_len)
             acc_pos_list.append(acc); p_pos_list.append(p); r_pos_list.append(r); f1_pos_list.append(f1)
             print("Fold {} emotion acc: {:.4f} p: {:.4f} r: {:.4f} f1: {:.4f}".format(fold, acc, p, r, f1))
             # cause results
-            acc, p, r, f1 = acc_prf_1st_step(te_pred_y_cause, te_y_cause, te_doc_len)
+            acc, p, r, f1 = acc_prf_aux(te_pred_y_cause, te_y_cause, te_doc_len)
             acc_cause_list.append(acc); p_cause_list.append(p); r_cause_list.append(r); f1_cause_list.append(f1)
             print("Fold {} cause acc: {:.4f} p: {:.4f} r: {:.4f} f1: {:.4f}".format(fold, acc, p, r, f1))
             # pair results

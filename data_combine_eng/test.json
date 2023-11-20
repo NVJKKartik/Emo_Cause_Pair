@@ -1,0 +1,63 @@
+[
+    {
+        "conversation_ID": 57,
+        "conversation": [
+            {
+                "utterance_ID": 1,
+                "text": "This is just Bactine . It will not hurt .",
+                "speaker": "Monica",
+                "emotion": "neutral",
+                "video_name": "dia57utt1.mp4"
+            },
+            {
+                "utterance_ID": 2,
+                "text": "Sorry , that was wax .",
+                "speaker": "Joey",
+                "emotion": "neutral",
+                "video_name": "dia57utt2.mp4"
+            },
+            {
+                "utterance_ID": 3,
+                "text": "Oh , poor little Tooty is scared to death . We should find his owner .",
+                "speaker": "Phoebe",
+                "emotion": "sadness",
+                "video_name": "dia57utt3.mp4"
+            },
+            {
+                "utterance_ID": 4,
+                "text": "Why do not we just put poor little Tooty out in the hall ?",
+                "speaker": "Ross",
+                "emotion": "disgust",
+                "video_name": "dia57utt4.mp4"
+            },
+            {
+                "utterance_ID": 5,
+                "text": "During a blackout ? He would get trampled !",
+                "speaker": "Rachel",
+                "emotion": "anger",
+                "video_name": "dia57utt5.mp4"
+            },
+            {
+                "utterance_ID": 6,
+                "text": "Yeah ?",
+                "speaker": "Ross",
+                "emotion": "neutral",
+                "video_name": "dia57utt6.mp4"
+            }
+        ],
+        "emotion-cause_pairs": [
+            [
+                "3_sadness",
+                "3"
+            ],
+            [
+                "5_anger",
+                "4"
+            ],
+            [
+                "5_anger",
+                "5"
+            ]
+        ]
+    }
+]
