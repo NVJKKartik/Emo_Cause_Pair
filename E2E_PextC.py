@@ -11,8 +11,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################################ FLAGS ############################################################
 train_file_path = './data_combine_eng/clause_keywords.csv'          # clause keyword file
-w2v_file = './data_combine_eng/w2v_200.txt'                         # embedding file
-embedding_dim = 200                                                 # dimension of word embedding
+w2v_file = './data_combine_eng/ECF_glove_300.txt'                   # embedding file
+embedding_dim = 300                                                 # dimension of word embedding
 embedding_dim_pos = 50                                              # dimension of position embedding
 max_sen_len = 30                                                    # max number of tokens per sentence
 max_doc_len = 41                                                    # max number of tokens per document
@@ -146,14 +146,14 @@ def train_and_eval(Model, pos_cause_criterion, pair_criterion, optimizer):
     acc_pos_list, p_pos_list, r_pos_list, f1_pos_list = [], [], [], []
     acc_pair_list, p_pair_list, r_pair_list, f1_pair_list = [], [], [], []
     #################################### LOOP OVER FOLDS ####################################
-    for fold in range(1, 11):
+    for fold in range(1,2):
         print('############# fold {} begin ###############'.format(fold))
         ############################# RE-INITIALIZE MODEL PARAMETERS #############################
         for layer in Model.parameters():
             nn.init.uniform_(layer.data, -0.10, 0.10)
         #################################### TRAIN/TEST DATA ####################################
-        train_file_name = 'fold{}_train.txt'.format(fold)
-        val_file_name = 'fold{}_val.txt'.format(fold)
+        train_file_name = 'train.txt'.format(fold)
+        val_file_name = 'dev.txt'.format(fold)
         tr_y_position, tr_y_cause, tr_y_pair, tr_x, tr_sen_len, tr_doc_len, tr_distance = load_data_pair(
                         './data_combine_eng/'+train_file_name, word_id_mapping, max_doc_len, max_sen_len)
         val_y_position, val_y_cause, val_y_pair, val_x, val_sen_len, val_doc_len, val_distance = \
@@ -227,8 +227,8 @@ def train_and_eval(Model, pos_cause_criterion, pair_criterion, optimizer):
 
             #################################### STORE BETTER PAIR F1 ####################################
             if result_avg_pair[-1] > max_f1_avg:
-                torch.save(pos_embedding, "./save/pos_embedding_fold_{}.pth".format(fold))
-                torch.save(Model.state_dict(), "./save/E2E-EC_fold_{}.pth".format(fold))
+                torch.save(pos_embedding, "./save/pos_embedding.pth".format(fold))
+                torch.save(Model.state_dict(), "./save/E2E-EC.pth".format(fold))
                 max_f1_avg = result_avg_pair[-1]
                 result_avg_cause_max = result_avg_cause
                 result_avg_pos_max = result_avg_pos

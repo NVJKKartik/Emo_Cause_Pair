@@ -12,8 +12,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################################ FLAGS ############################################################
 train_file_path = './data_combine_eng/clause_keywords.csv'          # clause keyword file
-w2v_file = './data_combine_eng/w2v_200.txt'                         # embedding file
-embedding_dim = 200                                                 # dimension of word embedding
+w2v_file = 'data_combine_eng/ECF_glove_300.txt'                         # embedding file
+embedding_dim = 300                                                 # dimension of word embedding
 embedding_dim_pos = 50                                              # dimension of position embedding
 max_sen_len = 30                                                    # max number of tokens per sentence
 max_doc_len = 41                                                    # max number of tokens per document
@@ -31,14 +31,14 @@ def test(Model):
     acc_pos_list, p_pos_list, r_pos_list, f1_pos_list = [], [], [], []
     acc_pair_list, p_pair_list, r_pair_list, f1_pair_list = [], [], [], []
     #################################### LOOP OVER FOLDS ####################################
-    for fold in range(1, 11):
+    for fold in range(1, 2):
         print('############# fold {} begin ###############'.format(fold))
         #################################### LOAD TEST DATA ####################################
-        test_file_name = 'fold{}_test.json'.format(fold)
+        test_file_name = 'test.txt'.format(fold)
         te_y_position, te_y_cause, te_y_pair, te_x, te_sen_len, te_doc_len, te_distance = load_data_pair(
             './data_combine_eng/'+test_file_name, word_id_mapping, max_doc_len, max_sen_len)
-        pos_embedding = torch.load("./save/pos_embedding_fold_{}.pth".format(fold))
-        Model.load_state_dict(torch.load("./save/E2E-PextE_fold_{}.pth".format(fold)))
+        pos_embedding = torch.load("./save/pos_embedding.pth".format(fold))
+        Model.load_state_dict(torch.load("./save/E2E-PextE.pth".format(fold)))
         with torch.no_grad():
             Model.eval()
             te_pred_y_pos, te_pred_y_cause, te_pred_y_pair = Model(embedding_lookup(word_embedding, \
